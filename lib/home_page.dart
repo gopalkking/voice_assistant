@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mr_gk/feature_box.dart';
+import 'package:mr_gk/openai_service.dart';
 import 'package:mr_gk/palette.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final speechToText = SpeechToText();
   String lastWords = '';
+  final OpenAIService openAIService =OpenAIService();
 
   @override
   void initState() {
@@ -167,6 +169,7 @@ Future<void> stopListening() async {
             if  (await speechToText.hasPermission && speechToText.isNotListening ) {
              await startListening();
             } else if(speechToText.isListening){
+              await openAIService.isArtPromtAPI(lastWords);
              await  stopListening();
             }else{
               initSpeechToText();
